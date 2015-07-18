@@ -33,3 +33,6 @@ public/smartadmin
 # IntelliJ folders & files
 .idea
 workspace.xml
+
+# TypeScript
+typings
