@@ -36,3 +36,6 @@ workspace.xml
 
 # TypeScript
 typings
+
+# Databse
+/db/
