@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "description": "A CMS for donating, organizing and trading books between foster homes",
-  "author": [
+  "repository": {
+   "type": "git",
+   "url": "https://github.com/PaperJamTeam/bibliothek"
+  },
+  "contributors": [
     "Ivan Latunov <xswordsx@gmail.com>",
     "Georgi Harizanov <gharizanov92@gmail.com>"
   ],

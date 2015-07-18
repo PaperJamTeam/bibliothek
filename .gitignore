@@ -27,6 +27,9 @@ build/Release
 node_modules
 public/components
 
+# Smart Admin
+public/smartadmin
+
 # IntelliJ folders & files
 .idea
 workspace.xml
