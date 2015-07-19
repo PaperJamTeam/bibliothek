@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+/// <reference path="../typings/tsd.d.ts" />
+import mongoose = require('mongoose');
 
 var BookSchema = new mongoose.Schema({
     _id: String,
