@@ -33,6 +33,9 @@
 			"commit": "8c9ede30fca2a095018e70940806cc9c8aa122f6"
 		},
 		"mongoose/mongoose.d.ts": {
+			"commit": "159b808f9b035ca971d19d93ac675030e87048d8"
+		},
+		"passport/passport.d.ts": {
 			"commit": "db475daba23206e8cd0ac04d47f0764f4a62f7da"
 		}
 	}

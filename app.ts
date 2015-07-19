@@ -6,13 +6,16 @@ import favicon = require('serve-favicon');
 import logger = require('morgan');
 import cookieParser = require('cookie-parser');
 import bodyParser = require('body-parser');
+import passport = require('passport');
+import mongoose = require('mongoose');
 
 import routes = require('./routes/index');
 import homes = require('./routes/homes');
 import users = require('./routes/user');
-import mongoose = require('mongoose');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bibliothek');
+
+import login = require('./routes/login');
 
 var app = express();
 
@@ -31,6 +34,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -38,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/homes', homes);
 app.use('/users', users);
+app.use('/login', login);
 
 /// catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -2,11 +2,12 @@
   "name": "bibliothek",
   "version": "0.0.1",
   "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
+	"**/.*",
+	"node_modules",
+	"components"
   ],
   "dependencies": {
-    "jqgrid": "~4.8.2"
+	"bootstrap": "~3.3.5",
+	"jqgrid": "~4.8.2"
   }
 }
