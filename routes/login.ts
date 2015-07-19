@@ -11,20 +11,23 @@ var LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
 	(email, password, next) => {
-		if (email !== 'gosho@bot.com') {
-			return next(null, false, {message: 'Incorrect username'});
-		}
-		if (password !== '1234') {
-			return next(null, false, {message: 'Incorrect password'});
-		}
-		return next(null, {u: 'a'});
+		return User.findOne({email: email}).exec()
+			.then((user) => {
+				if (!user) {
+					next({message: 'Incorrect email.'}, false);
+				}
+				if (user['password'] !== password) {
+					next({message: 'Incorrect password.'}, false);
+				}
+				next(null, user);
+			}, next);
 	}));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
 	done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
 	done(null, user);
 });
 

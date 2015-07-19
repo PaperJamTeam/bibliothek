@@ -2,9 +2,8 @@
 
 import express = require('express');
 import mongoose = require('mongoose');
-require('./../models/Home');
 
-var Home = mongoose.model('Home');
+import Home = require('../models/Home');
 
 var router = express.Router();
 
@@ -25,7 +24,7 @@ router.get('/data', (req, res) => {
 	}
 	Home.count((err, total) => {
 		if(!err){
-			Home.find()
+			Home.find({})
 				.sort(sort)
 				.limit(max)
 				.skip((page - 1) * max)

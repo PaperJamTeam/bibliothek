@@ -12,10 +12,10 @@ import mongoose = require('mongoose');
 import routes = require('./routes/index');
 import homes = require('./routes/homes');
 import users = require('./routes/user');
+import login = require('./routes/login');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bibliothek');
 
-import login = require('./routes/login');
 
 var app = express();
 

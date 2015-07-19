@@ -1,6 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
 import mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost:27017');
 
 var UserSchema = new mongoose.Schema({
 	_id: String,
