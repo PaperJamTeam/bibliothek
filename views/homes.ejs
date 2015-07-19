@@ -1,0 +1,65 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqgrid/css/ui.jqgrid.css">
+	<!--<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqgrid/css/ui.jqgrid-bootstrap.css">-->
+	<link rel="stylesheet" type="text/css" media="screen" href="/../css/jqueryui/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/../css/jqueryui/jquery-ui.theme.min.css">
+	<link rel="stylesheet" href="/../css/style.css">
+</head>
+<body>
+
+	<table id="homes_table"></table>
+	<div id="pager"></div>
+
+	<script type="text/javascript" src="/../components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="/../components/jquery-ui/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/../components/jqgrid/js/minified/jquery.jqGrid.min.js"></script>
+	<script type="text/javascript" src="/../components/jqgrid/js/minified/i18n/grid.locale-en.js"></script>
+
+	<script type="text/javascript">
+
+		$.extend($.jgrid.defaults, {
+			datatype: 'json',
+			jsonReader : {
+				repeatitems:false,
+				total: function(result) {
+					//Total number of pages
+					return Math.ceil(result.total / result.max);
+				},
+				records: function(result) {
+					//Total number of records
+					return result.total;
+				}
+			},
+			prmNames: {rows: 'max', search: null},
+			height: 'auto',
+			viewrecords: true,
+			rowList: [10, 20, 50, 100],
+			altRows: true,
+			loadError: function(xhr, status, error) {
+				alert(error);
+			}
+		});
+
+		$(document).ready(function(){
+			$("#homes_table")
+					.jqGrid({
+						url:'/homes/data',
+						colModel:[
+							{name:'_id', label: 'ID', width: 50, editable: false},
+							{name:'name', label: 'Име', width: 300, editable: true},
+							{name:'area', label: 'Област', width: 100, editable: true},
+							{name:'township', label: 'Град', width: 100, editable: true},
+							{name:'address', label: 'Адрес', width: 100, editable: true},
+							{name:'telephone', label: 'Телефон', width: 80, editable: true},
+							{name:'principal', label: 'Директор', width: 100, editable: true}
+						],
+						caption: "Домове",
+						pager : '#pager',
+						height: 'auto'
+					}).navGrid('#pager', {edit:true,add:true,del:true, search: false});
+		})
+	</script>
+
+</body>
+</html>
