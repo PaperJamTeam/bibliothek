@@ -11,4 +11,5 @@ var HomeSchema = new mongoose.Schema({
 	principal: String
 });
 
-mongoose.model('Home', HomeSchema);
+var HomeModel = mongoose.model('Home', HomeSchema);
+export = HomeModel;
