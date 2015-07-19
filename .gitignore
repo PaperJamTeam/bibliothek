@@ -40,5 +40,8 @@ workspace.xml
 *.map
 !Gruntfile.js
 
+# LESS generated CSS
+/public/css/style.css
+
 # Databse
 /db/
