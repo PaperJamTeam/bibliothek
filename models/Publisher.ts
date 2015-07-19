@@ -6,4 +6,5 @@ var PublisherSchema = new mongoose.Schema({
 	name: String
 });
 
-mongoose.model('Publisher', PublisherSchema);
+var PublisherModel = mongoose.model('Publisher', PublisherSchema);
+export = PublisherModel;

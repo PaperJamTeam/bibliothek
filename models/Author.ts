@@ -6,4 +6,5 @@ var AuthorSchema = new mongoose.Schema({
 	NAME: String
 });
 
-mongoose.model('Author', AuthorSchema);
+var AuthorModel = mongoose.model('Author', AuthorSchema);
+export = AuthorModel;

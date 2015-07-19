@@ -15,4 +15,5 @@ var BookSchema = new mongoose.Schema({
 	authors: [{type: String, ref: 'Author'}]
 });
 
-mongoose.model('Book', BookSchema);
+var BookModel = mongoose.model('Book', BookSchema);
+export = BookModel;
