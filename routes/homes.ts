@@ -22,6 +22,7 @@ router.get('/data', (req, res) => {
 	if(sidx && sidx !== ''){
 		sort[sidx] = order;
 	}
+
 	Home.count((err, total) => {
 		if(!err){
 			Home.find({})

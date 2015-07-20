@@ -1,9 +1,8 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqgrid/css/ui.jqgrid.css">
-	<!--<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqgrid/css/ui.jqgrid-bootstrap.css">-->
-	<link rel="stylesheet" type="text/css" media="screen" href="/../css/jqueryui/jquery-ui.min.css">
-	<link rel="stylesheet" type="text/css" media="screen" href="/../css/jqueryui/jquery-ui.theme.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/../components/free-jqgrid/css/ui.jqgrid.min.css">
+	<!--<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqueryui/jquery-ui.min.css">-->
+	<link rel="stylesheet" type="text/css" media="screen" href="/../components/jquery-ui/themes/base/jquery-ui.min.css">
 	<link rel="stylesheet" href="/../css/style.css">
 </head>
 <body>
@@ -12,9 +11,9 @@
 	<div id="pager"></div>
 
 	<script type="text/javascript" src="/../components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="/../components/jquery-ui/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="/../components/jqgrid/js/minified/jquery.jqGrid.min.js"></script>
-	<script type="text/javascript" src="/../components/jqgrid/js/minified/i18n/grid.locale-en.js"></script>
+	<!--<script type="text/javascript" src="/../components/jquery-ui/jquery-ui.min.js"></script>-->
+	<script type="text/javascript" src="/../components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
+	<!--<script type="text/javascript" src="/../components/free-jqgrid/js/minified/i18n/grid.locale-en.js"></script>-->
 
 	<script type="text/javascript">
 
@@ -57,7 +56,7 @@
 						caption: "Домове",
 						pager : '#pager',
 						height: 'auto'
-					}).navGrid('#pager', {edit:true,add:true,del:true, search: false});
+					}).navGrid('#pager', {edit:true,add:true,del:true, search: true});
 		})
 	</script>
 
