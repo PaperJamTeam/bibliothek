@@ -46,6 +46,37 @@ router.get('/data', (req, res) => {
 			res.status(500).end();
 		}
 	});
+});
+
+router.post('/data', (req, res) => {
+	var data = req.body;
+	console.log(data);
+
+	var request_type = data['oper'];
+	delete data['oper'];
+	delete data['id'];
+
+	if(request_type === 'add'){
+		var id = mongoose.Types.ObjectId();
+		var home = new Home(data);
+
+		home["_id"] = id;
+		home.save( (err, res) => {
+			console.log(res);
+			if(!err){
+				res.status(201).end();
+			} else {
+				res.status(500).end();
+			}
+		})
+	} else {
+		if(request_type === 'edit'){
+
+			var _id = data['_id'];
+			delete data['_id'];
+		}
+	}
+
 
 });
 
