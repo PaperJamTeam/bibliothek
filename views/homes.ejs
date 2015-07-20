@@ -60,7 +60,14 @@
 					}).navGrid('#pager', {edit:true,add:true,del:true},
 					{},
 					{},
-					{},{multipleSearch:true, multipleGroup:false});
+					{
+						reloadAfterSubmit:true,
+						onclickSubmit : function(e, rowid) {
+							var _id = $(this).getCell(rowid, '_id');
+							return {_id:_id};
+						}
+					},
+					{multipleSearch:true, multipleGroup:false});
 		})
 	</script>
 
