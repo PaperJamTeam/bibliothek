@@ -1,0 +1,27 @@
+#!/bin/sh
+basedir=`dirname "$0"`
+
+case `uname` in
+    *CYGWIN*) basedir=`cygpath -w "$basedir"`;;
+esac
+
+typescript="$basedir/node_modules/typescript/bin/tsc"
+
+if [ -x "tsc" ]; then
+	typescript="tsc"
+fi
+
+params[0]="$typescript"
+params[1]="--sourcemap"
+params[2]="--module"
+params[3]="commonjs"
+params[4]="bin/www.ts"
+
+if [ -x "$basedir/node" ]; then
+  "$basedir/node" "${params[@]}"
+  ret=$?
+else
+  node "${params[@]}"
+  ret=$?
+fi
+exit $ret

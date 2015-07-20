@@ -58,8 +58,22 @@ module.exports = function (grunt) {
 					livereload: reloadPort
 				}
 			}
+		},
+		exec: {
+			compile: {
+				cmd: function() {
+					return (process.platform === 'win32') ? "cmds\\compile.cmd" : './cmds/compile';
+				}
+			},
+			postinstall: {
+				cmd: function () {
+					return (process.platform === 'win32') ? "cmds\\postinstall.cmd" : './cmds/postinstall';
+				}
+			}
 		}
 	});
+
+	grunt.loadNpmTasks('grunt-exec');
 
 	grunt.config.requires('watch.server.files');
 	files = grunt.config('watch.server.files');
