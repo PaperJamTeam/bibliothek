@@ -1,13 +1,15 @@
 /// <reference path="../typings/tsd.d.ts" />
-var express = require('express');
-var mongoose = require('mongoose');
-var Home = require('../models/Home');
+import express = require('express');
+import mongoose = require('mongoose');
+import Home = require('../models/Home');
+
 var router = express.Router();
 /* GET homes page. */
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
 	res.render('homes');
 });
-router.get('/data', function (req, res) {
+
+router.get('/data', (req, res) => {
 	var page = req.query['page'];
 	var max = req.query['max'];
 	var sidx = req.query['sidx'];
@@ -16,9 +18,9 @@ router.get('/data', function (req, res) {
 	if (sidx && sidx !== '') {
 		sort[sidx] = order;
 	}
-	Home.count(function (err, total) {
+	Home.count((err, total) => {
 		if (!err) {
-			Home.find({}).sort(sort).limit(max).skip((page - 1) * max).exec(function (err, homes) {
+			Home.find({}).sort(sort).limit(max).skip((page - 1) * max).exec((err, homes) => {
 				if (!err) {
 					var result = {
 						rows: homes,
@@ -38,7 +40,8 @@ router.get('/data', function (req, res) {
 		}
 	});
 });
-router.post('/data', function (req, res) {
+
+router.post('/data', (req, res) => {
 	var data = req.body;
 	var request_type = data['oper'];
 
@@ -46,10 +49,10 @@ router.post('/data', function (req, res) {
 	delete data['id'];
 
 	if (request_type === 'add') {
-		var id = mongoose.Types.ObjectId();
+		var id = new mongoose.Types.ObjectId();
 		var home = new Home(data);
 		home["_id"] = id;
-		home.save(function (err, result) {
+		home.save((err, result) => {
 			console.log(result);
 			if (!err) {
 				res.status(201).end();
@@ -65,7 +68,7 @@ router.post('/data', function (req, res) {
 
 		if (request_type === 'edit') {
 
-			Home.update({_id:_id}, data, {}, function(err, result) {
+			Home.update({_id: _id}, data, {}, (err, result) => {
 				console.log(result);
 				if (!err) {
 					res.status(200).end();
@@ -75,9 +78,9 @@ router.post('/data', function (req, res) {
 				}
 			});
 		} else {
-			if(request_type === 'del'){
+			if (request_type === 'del') {
 				console.log(_id);
-				Home.remove({_id : _id}, function(err, result){
+				Home.remove({_id: _id}, (err, result) => {
 					if (!err) {
 						res.status(200).end();
 					}
@@ -89,5 +92,4 @@ router.post('/data', function (req, res) {
 		}
 	}
 });
-module.exports = router;
-//# sourceMappingURL=homes.js.map
+export = router;
