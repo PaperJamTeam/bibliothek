@@ -49,6 +49,7 @@ router.get('/data', (req, res) => {
 });
 
 router.post('/data', (req, res) => {
+<<<<<<< HEAD
 	var data = req.body;
 	console.log(data);
 
@@ -60,6 +61,13 @@ router.post('/data', (req, res) => {
 		var id = mongoose.Types.ObjectId();
 		var home = new Home(data);
 
+=======
+	var request_type = req.body['oper'];
+	var id = mongoose.Types.ObjectId();
+
+	if(request_type === 'add'){
+		var home = new Home(req.body);
+>>>>>>> origin/master
 		home["_id"] = id;
 		home.save( (err, res) => {
 			console.log(res);
@@ -72,8 +80,11 @@ router.post('/data', (req, res) => {
 	} else {
 		if(request_type === 'edit'){
 
+<<<<<<< HEAD
 			var _id = data['_id'];
 			delete data['_id'];
+=======
+>>>>>>> origin/master
 		}
 	}
 
