@@ -149,7 +149,7 @@ router.post('/data', (req, res) => {
 		} else {
 			if (request_type === 'del') {
 				console.log(_id);
-				Home.remove({_id: _id}, (err, result) => {
+				Home.remove({_id: _id}, (err) => {
 					if (!err) {
 						res.status(200).end();
 					}
