@@ -32,10 +32,12 @@ module.exports = function (grunt) {
 			server: {
 				files: [
 					'bin/www',
-					'app.js',
-					'routes/*.js'
+					'bin/www.ts',
+					'app.ts',
+					'routes/*.ts',
+					'models/*.ts'
 				],
-				tasks: ['develop', 'delayed-livereload']
+				tasks: ['exec:compile']
 			},
 			js: {
 				files: ['public/js/*.js'],
