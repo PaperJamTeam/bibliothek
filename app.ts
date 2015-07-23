@@ -13,9 +13,9 @@ import routes = require('./routes/index');
 import homes = require('./routes/homes');
 import users = require('./routes/user');
 import login = require('./routes/login');
+import jqtable = require('./routes/middleware/jqtable_middeware');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bibliothek');
-
 
 var app = express();
 
@@ -40,6 +40,9 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//  jqtable middleware for parsing filter and sort data //
+app.use(jqtable);
+//////////////////////////////////////////////////////////
 app.use('/', routes);
 app.use('/homes', homes);
 app.use('/users', users);

@@ -7,10 +7,6 @@ esac
 
 typescript="$basedir/node_modules/typescript/bin/tsc"
 
-if [ -x "tsc" ]; then
-	typescript="tsc"
-fi
-
 params[0]="$typescript"
 params[1]="--sourcemap"
 params[2]="--module"
