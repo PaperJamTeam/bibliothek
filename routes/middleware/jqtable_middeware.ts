@@ -1,6 +1,19 @@
 /// <reference path="../../typings/tsd.d.ts" />
+import mongoose = require('mongoose');
 
-var jqtable = (req, res, next) => {
+export class JqData {
+	page: number;
+	rows: number;
+	query: Object[];
+
+	constructor(page: number, rows: number, query: Object[]){
+		this.page = page;
+		this.rows = rows;
+		this.query = query;
+	}
+}
+
+export var dataParser = (req, res, next) => {
 	var page = req.query['page'];
 	var max = req.query['max'];
 	var sidx = req.query['sidx'];
@@ -24,7 +37,6 @@ var jqtable = (req, res, next) => {
 	}
 
 	req['jqtable_query'] = agg;
-	console.log(agg);
 
 	var grouped_filters = [];
 	var filter_data = {};
@@ -112,4 +124,97 @@ var jqtable = (req, res, next) => {
 	next();
 };
 
-export = jqtable;
+export var generalDataSourceService = (Model: mongoose.Model<any>) => {
+	return (req, res) => {
+		var page = req.query['page'];
+		var max = req.query['max'];
+		var parsedJqReqData = req['jqtable_query'];
+
+		generateJqtableData(Model, new JqData(page, max, parsedJqReqData), (err, data) => {
+			if(!err){
+				res.json(data);
+			} else {
+				console.log(err);
+				res.status(500).send();
+			}
+		})
+	}
+};
+
+export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, cb: Function) : any => {
+	Model.count((err, total) => {
+		if (!err) {
+			Model.aggregate(reqData.query).exec((err, data) => {
+				if (!err) {
+					cb(null, {
+						rows: data,
+						page: reqData.page,
+						max: reqData.rows,
+						total: total
+					});
+				} else {
+					cb(err);
+				}
+			});
+		} else {
+			cb(err);
+		}
+	});
+};
+
+export var generalCrudService = (model: mongoose.Model<any>) => {
+	return (req, res) => {
+		var data = req.body;
+		console.log(data);
+		var request_type = data['oper'];
+
+		delete data['oper'];
+		delete data['id'];
+
+		if (request_type === 'add') {
+
+			var id = new mongoose.Types.ObjectId();
+			var entity = new model(data);
+			entity["_id"] = id;
+
+			entity.save((err) => {
+				if (!err) {
+					res.status(201).end();
+				}
+				else {
+					console.log(err);
+					res.status(500).end();
+				}
+			});
+
+		} else {
+			var _id = data['_id'];
+			delete data['_id'];
+
+			if (request_type === 'edit') {
+
+				model.update({_id: _id}, data, {}, (err) => {
+					if (!err) {
+						res.status(200).end();
+					}
+					else {
+						console.log(err);
+						res.status(500).end();
+					}
+				});
+			} else {
+				if (request_type === 'del') {
+					model.remove({_id: _id}, (err) => {
+						if (!err) {
+							res.status(200).end();
+						}
+						else {
+							console.log(err);
+							res.status(500).end();
+						}
+					});
+				}
+			}
+		}
+	}
+}
