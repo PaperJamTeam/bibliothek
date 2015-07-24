@@ -3,7 +3,6 @@ import mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var HomeSchema = new Schema({
-	_id: String,
 	name: String,
 	area: String,
 	township: String,

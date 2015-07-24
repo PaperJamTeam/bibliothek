@@ -28,13 +28,15 @@
 				records: function(result) {
 					//Total number of records
 					return result.total;
-				}
+				},
+				id: "_id"
 			},
 			prmNames: {rows: 'max', search: null},
 			height: 'auto',
 			viewrecords: true,
 			rowList: [10, 20, 50, 100],
 			altRows: true,
+			//loadonce: true,
 			loadError: function(xhr, status, error) {
 				alert(error);
 			}
@@ -46,7 +48,7 @@
 						url:'/homes/data',
 						editurl:'/homes/data',
 						colModel:[
-							{name:'_id', label: 'ID', width: 50, hidden: true, editable: true, editoptions:{disabled: true}},
+							//{name:'_id', label: 'ID', width: 50, hidden: true, editable: true, editoptions:{disabled: true}},
 							{name:'name', label: 'Име', width: 300, editable: true},
 							{name:'area', label: 'Област', width: 100, editable: true},
 							{name:'township', label: 'Град', width: 100, editable: true},
@@ -60,13 +62,7 @@
 					}).navGrid('#pager', {edit:true,add:true,del:true},
 					{},
 					{},
-					{
-						reloadAfterSubmit:true,
-						onclickSubmit : function(e, rowid) {
-							var _id = $(this).getCell(rowid, '_id');
-							return {_id:_id};
-						}
-					},
+					{},
 					{multipleSearch:true, multipleGroup:false});
 		})
 	</script>

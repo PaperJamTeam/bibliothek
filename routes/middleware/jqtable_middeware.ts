@@ -144,6 +144,7 @@ export var generalDataSourceService = (Model: mongoose.Model<any>) => {
 export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, cb: Function) : any => {
 	Model.count((err, total) => {
 		if (!err) {
+			console.log(reqData.query);
 			Model.aggregate(reqData.query).exec((err, data) => {
 				if (!err) {
 					cb(null, {
@@ -168,14 +169,14 @@ export var generalCrudService = (model: mongoose.Model<any>) => {
 		console.log(data);
 		var request_type = data['oper'];
 
+		//delete unnecessary fields from data, we don't want them in our DB
 		delete data['oper'];
+		var _id = data['id'];
 		delete data['id'];
 
 		if (request_type === 'add') {
 
-			var id = new mongoose.Types.ObjectId();
 			var entity = new model(data);
-			entity["_id"] = id;
 
 			entity.save((err) => {
 				if (!err) {
@@ -188,8 +189,6 @@ export var generalCrudService = (model: mongoose.Model<any>) => {
 			});
 
 		} else {
-			var _id = data['_id'];
-			delete data['_id'];
 
 			if (request_type === 'edit') {
 

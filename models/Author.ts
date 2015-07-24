@@ -2,8 +2,7 @@
 import mongoose = require('mongoose');
 
 var AuthorSchema = new mongoose.Schema({
-	_id: String,
-	NAME: String
+	name: String
 });
 
 var AuthorModel = mongoose.model('Author', AuthorSchema);
