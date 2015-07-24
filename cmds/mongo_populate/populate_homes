@@ -1,0 +1,8 @@
+#!/bin/sh
+mongo_import_dir=$(where mongoimport)
+if [ -f "$mongo_import_dir" ]; then
+	mongoimport --host localhost --port 27017 --collection homes --db bibliothek --jsonArray --file ./homes_data.json --verbose
+else
+	echo "Cannot find an executable \`mongoimport\`"
+	exit
+fi
