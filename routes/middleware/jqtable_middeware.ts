@@ -124,20 +124,32 @@ export var dataParser = (req, res, next) => {
 	next();
 };
 
-export var generalDataSourceService = (Model: mongoose.Model<any>) => {
+export var generalDataSourceService = (Model: mongoose.Model<any>, lazy = true) => {
 	return (req, res) => {
 		var page = req.query['page'];
 		var max = req.query['max'];
 		var parsedJqReqData = req['jqtable_query'];
 
-		generateJqtableData(Model, new JqData(page, max, parsedJqReqData), (err, data) => {
-			if(!err){
-				res.json(data);
-			} else {
-				console.log(err);
-				res.status(500).send();
-			}
-		})
+		if(lazy){
+			generateJqtableData(Model, new JqData(page, max, parsedJqReqData), (err, data) => {
+				console.log(data);
+				if(!err){
+					res.json(data);
+				} else {
+					console.log(err);
+					res.status(500).send();
+				}
+			})
+		} else {
+			Model.find((err, data) => {
+				if(!err){
+					res.json(data);
+				} else {
+					console.log(err);
+					res.status(500).send();
+				}
+			});
+		}
 	}
 };
 
@@ -163,7 +175,7 @@ export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, c
 	});
 };
 
-export var generalCrudService = (model: mongoose.Model<any>) => {
+export var generalCrudService = (Model: mongoose.Model<any>) => {
 	return (req, res) => {
 		var data = req.body;
 		console.log(data);
@@ -176,7 +188,7 @@ export var generalCrudService = (model: mongoose.Model<any>) => {
 
 		if (request_type === 'add') {
 
-			var entity = new model(data);
+			var entity = new Model(data);
 
 			entity.save((err) => {
 				if (!err) {
@@ -192,7 +204,7 @@ export var generalCrudService = (model: mongoose.Model<any>) => {
 
 			if (request_type === 'edit') {
 
-				model.update({_id: _id}, data, {}, (err) => {
+				Model.update({_id: _id}, data, {}, (err) => {
 					if (!err) {
 						res.status(200).end();
 					}
@@ -203,7 +215,7 @@ export var generalCrudService = (model: mongoose.Model<any>) => {
 				});
 			} else {
 				if (request_type === 'del') {
-					model.remove({_id: _id}, (err) => {
+					Model.remove({_id: _id}, (err) => {
 						if (!err) {
 							res.status(200).end();
 						}

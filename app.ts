@@ -11,6 +11,7 @@ import mongoose = require('mongoose');
 
 import routes = require('./routes/index');
 import homes = require('./routes/homes');
+import books = require('./routes/books');
 import users = require('./routes/user');
 import login = require('./routes/login');
 
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/homes', homes);
+app.use('/books', books);
 app.use('/users', users);
 app.use('/login', login);
 

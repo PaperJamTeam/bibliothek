@@ -3,7 +3,6 @@ import mongoose = require('mongoose');
 
 var BookSchema = new mongoose.Schema({
 	ISBN: String,
-	productId: String,
 	datePublished: String,
 	EAN: String,
 	bookTitle: String,

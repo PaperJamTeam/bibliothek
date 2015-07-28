@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 
 router.use(jqtable.dataParser);
 
-router.get('/data', jqtable.generalDataSourceService(Home));
+router.get('/data', jqtable.generalDataSourceService(Home, false));
 
 router.post('/data', jqtable.generalCrudService(Home));
 

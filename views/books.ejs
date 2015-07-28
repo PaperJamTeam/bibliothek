@@ -36,7 +36,7 @@
 			viewrecords: true,
 			rowList: [10, 20, 50, 100],
 			altRows: true,
-			loadonce: true,
+			//loadonce: true,
 			loadError: function(xhr, status, error) {
 				alert(error);
 			}
@@ -45,18 +45,16 @@
 		$(document).ready(function(){
 			$("#homes_table")
 					.jqGrid({
-						url:'/homes/data',
-						editurl:'/homes/data',
+						url:'/books/data',
+						editurl:'/books/data',
 						colModel:[
-							//{name:'_id', label: 'ID', width: 50, hidden: true, editable: true, editoptions:{disabled: true}},
-							{name:'name', label: 'Име', width: 300, editable: true},
-							{name:'area', label: 'Област', width: 100, editable: true},
-							{name:'township', label: 'Град', width: 100, editable: true},
-							{name:'address', label: 'Адрес', width: 100, editable: true},
-							{name:'telephone', label: 'Телефон', width: 80, editable: true},
-							{name:'principal', label: 'Директор', width: 100, editable: true}
+							{name:'ISBN', label: 'ISBN', width: 150, editable: true},
+							{name:'datePublished', label: 'Издадена', width: 100, editable: true},
+							{name:'EAN', label: 'EAN', width: 150, editable: true},
+							{name:'bookTitle', label: 'Заглавие', width: 500, editable: true},
+							{name:'pages', label: 'Страници', width: 100, editable: true}
 						],
-						caption: "Домове",
+						caption: "Книги",
 						pager : '#pager',
 						height: 'auto'
 					}).navGrid('#pager', {edit:true,add:true,del:true},
