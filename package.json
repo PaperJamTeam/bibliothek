@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "postinstall": "grunt exec:postinstall",
-    "prestart": "npm install && npm run compile",
+    "prestart": "npm install && grunt exec:compile",
     "compile": "grunt exec:compile",
     "start": "node ./bin/www"
   },
