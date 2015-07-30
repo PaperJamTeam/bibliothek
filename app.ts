@@ -15,7 +15,15 @@ import books = require('./routes/books');
 import users = require('./routes/user');
 import login = require('./routes/login');
 
-mongoose.connect('mongodb://127.0.0.1:27017/bibliothek');
+mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', (err) => {
+	if(err) {
+		console.error(
+			"[ERROR] (" + new Date().toUTCString() + ")",
+			"could not connect to MongoDB (" + err.message + ")"
+		);
+		process.exit(-1);
+	}
+});
 
 var app = express();
 
