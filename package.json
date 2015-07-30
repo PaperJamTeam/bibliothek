@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "postinstall": "grunt exec:postinstall",
-    "prestart": "npm install && grunt exec:compile",
+    "prestart": "npm install && npm run compile",
+    "compile": "grunt exec:compile",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -35,11 +36,12 @@
   },
   "devDependencies": {
     "grunt": "~0.4.5",
-    "grunt-develop": "~0.4.0",
     "grunt-contrib-less": "~1.0.0",
     "grunt-contrib-watch": "~0.6.1",
+    "grunt-develop": "~0.4.0",
+    "load-grunt-tasks": "~3.1.0",
     "request": "~2.55.0",
     "time-grunt": "~1.1.0",
-    "load-grunt-tasks": "~3.1.0"
+    "winston": "^1.0.1"
   }
 }

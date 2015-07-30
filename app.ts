@@ -3,11 +3,13 @@
 import express = require('express');
 import path = require('path');
 import favicon = require('serve-favicon');
-import logger = require('morgan');
+import loggerMorgan = require('morgan');
 import cookieParser = require('cookie-parser');
 import bodyParser = require('body-parser');
 import passport = require('passport');
 import mongoose = require('mongoose');
+
+import logger = require('./logger');
 
 import routes = require('./routes/index');
 import homes = require('./routes/homes');
@@ -17,11 +19,9 @@ import login = require('./routes/login');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', (err) => {
 	if(err) {
-		console.error(
-			"[ERROR] (" + new Date().toUTCString() + ")",
-			"could not connect to MongoDB (" + err.message + ")"
-		);
-		process.exit(-1);
+		logger.error("Could not connect to MongoDB (" + err.message + ")");
+		logger.info('Shutting down server...');
+		setTimeout(process.exit, 100, -1);
 	}
 });
 
@@ -37,7 +37,7 @@ app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
 // app.use(favicon(__dirname + '/public/img/favicon.ico'));
-app.use(logger('dev'));
+app.use(loggerMorgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
