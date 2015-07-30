@@ -18,10 +18,11 @@ import users = require('./routes/user');
 import login = require('./routes/login');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', (err) => {
-	if(err) {
+	if (err) {
 		logger.error("Could not connect to MongoDB (" + err.message + ")");
-		logger.info('Shutting down server...');
-		setTimeout(process.exit, 100, -1);
+		setTimeout(process.exit, 10, -1);
+	} else {
+		logger.info('Connected to MongoDB');
 	}
 });
 
