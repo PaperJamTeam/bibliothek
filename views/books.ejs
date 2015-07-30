@@ -7,43 +7,21 @@
 </head>
 <body>
 
-	<table id="homes_table"></table>
+	<div style="width:800px">
+		<table id="books_table"></table>
+	</div>
+
 	<div id="pager"></div>
 
 	<script type="text/javascript" src="/../components/jquery/dist/jquery.min.js"></script>
 	<!--<script type="text/javascript" src="/../components/jquery-ui/jquery-ui.min.js"></script>-->
 	<script type="text/javascript" src="/../components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
 	<script type="text/javascript" src="/../components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
+	<script type="text/javascript" src="/../js/jqGrid_defaults.js"></script>
 
 	<script type="text/javascript">
-
-		$.extend($.jgrid.defaults, {
-			datatype: 'json',
-			jsonReader : {
-				repeatitems:false,
-				total: function(result) {
-					//Total number of pages
-					return Math.ceil(result.total / result.max);
-				},
-				records: function(result) {
-					//Total number of records
-					return result.total;
-				},
-				id: "_id"
-			},
-			prmNames: {rows: 'max', search: null},
-			height: 'auto',
-			viewrecords: true,
-			rowList: [10, 20, 50, 100],
-			altRows: true,
-			//loadonce: true,
-			loadError: function(xhr, status, error) {
-				alert(error);
-			}
-		});
-
 		$(document).ready(function(){
-			$("#homes_table")
+			$("#books_table")
 					.jqGrid({
 						url:'/books/data',
 						editurl:'/books/data',
