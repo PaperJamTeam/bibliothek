@@ -1,5 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 import mongoose = require('mongoose');
+import logger = require('../../logger');
 
 export class JqData {
 	page: number;
@@ -175,57 +176,78 @@ export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, c
 	});
 };
 
+var CRUD_handler = {
+
+	create: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
+		delete data['id'];
+		delete data['oper'];
+
+		return (new Model(data)).save(callback);
+	},
+
+	read: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
+		return Model.findOne(data, callback);
+	},
+
+	update: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
+		var criteria = { _id: data['id'] };
+		var options = { };
+
+		delete data['id'];
+		delete data['oper'];
+
+		return Model.update(data, criteria, options, callback);
+	},
+
+	delete: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
+		return Model.remove({ _id: data['id'] }, callback);
+	}
+
+};
+// Add aliases
+CRUD_handler['add'] = CRUD_handler.create;
+CRUD_handler['del'] = CRUD_handler.delete;
+
+var CRUD_status = {
+	create: 201,
+	remove: 200,
+	update: 200,
+	delete: 200,
+	NOT_FOUND: 404,
+	FAIL: 500
+};
+
+CRUD_status['add'] = CRUD_status.create;
+CRUD_status['del'] = CRUD_status.delete;
+
 export var generalCrudService = (Model: mongoose.Model<any>) => {
-	return (req, res) => {
+	return (req, res, next?) => {
+
+		if(typeof next !== 'function') {
+			next = () => {};
+		}
 		var data = req.body;
-		console.log(data);
 		var request_type = data['oper'];
 
-		//delete unnecessary fields from data, we don't want them in our DB
-		delete data['oper'];
-		var _id = data['id'];
-		delete data['id'];
-
-		if (request_type === 'add') {
-
-			var entity = new Model(data);
-
-			entity.save((err) => {
-				if (!err) {
-					res.status(201).end();
-				}
-				else {
-					console.log(err);
-					res.status(500).end();
-				}
-			});
-
-		} else {
-
-			if (request_type === 'edit') {
-
-				Model.update({_id: _id}, data, {}, (err) => {
-					if (!err) {
-						res.status(200).end();
-					}
-					else {
-						console.log(err);
-						res.status(500).end();
-					}
+		var reseponseFunction = (err?: any, data?: any): void => {
+			if(err) {
+				logger.error(err);
+				res.status(CRUD_status['FAIL']).json({
+					message: 'Unable to fulfill request: ' + request_type.toUpperCase()
 				});
 			} else {
-				if (request_type === 'del') {
-					Model.remove({_id: _id}, (err) => {
-						if (!err) {
-							res.status(200).end();
-						}
-						else {
-							console.log(err);
-							res.status(500).end();
-						}
-					});
+				if(data) {
+					logger.info(request_type.toUpperCase(), 'successful.');
+					res.status(CRUD_status[request_type]).end();
+				} else {
+					logger.info(request_type.toUpperCase(), 'document not found.');
+					res.status(CRUD_status['NOT_FOUND']).end();
 				}
+
 			}
-		}
+			next(err);
+		};
+
+		CRUD_handler[request_type](Model, data, reseponseFunction);
 	}
-}
+};
