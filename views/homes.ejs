@@ -1,9 +1,9 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/free-jqgrid/css/ui.jqgrid.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/components/free-jqgrid/css/ui.jqgrid.min.css">
 	<!--<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqueryui/jquery-ui.min.css">-->
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/jquery-ui/themes/base/jquery-ui.min.css">
-	<link rel="stylesheet" href="/../css/style.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/components/jquery-ui/themes/base/jquery-ui.min.css">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 	<div style="width:800px">
@@ -11,33 +11,47 @@
 	</div>
 	<div id="pager"></div>
 
-	<script type="text/javascript" src="/../components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="/components/jquery/dist/jquery.min.js"></script>
 	<!--<script type="text/javascript" src="/../components/jquery-ui/jquery-ui.min.js"></script>-->
-	<script type="text/javascript" src="/../components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
-	<script type="text/javascript" src="/../components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
-	<script type="text/javascript" src="/../js/jqGrid_defaults.js"></script>
+	<script type="text/javascript" src="/components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
+	<script type="text/javascript" src="/components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
+	<script type="text/javascript" src="/js/jqGrid_defaults.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#homes_table")
-					.jqGrid({
-						url:'/homes/data',
-						editurl:'/homes/data',
-						loadonce: true,
-						colModel:[
-							{name:'name', label: 'Име', width: 500, editable: true},
-							{name:'area', label: 'Област', width: 150, editable: true},
-							{name:'township', label: 'Град', width: 150, editable: true},
-							{name:'address', label: 'Адрес', width: 550, editable: true},
-							{name:'telephone', label: 'Телефон', width: 250, editable: true},
-							{name:'principal', label: 'Директор', width: 300, editable: true}
-						],
-						grouping: true,
-						caption: "Домове",
-					}).navGrid('#pager', {edit:true,add:true,del:true},
-					{},
-					{},
-					{},
-					{multipleSearch:true, multipleGroup:false});
+				.jqGrid({
+					url     :'/homes/data',
+					editurl :'/homes/data',
+					loadonce: true,
+					colModel: [
+						{ name: 'name',      label: 'Име',      width: 500, editable: true },
+						{ name: 'area',      label: 'Област',   width: 150, editable: true },
+						{ name: 'township',  label: 'Град',     width: 150, editable: true },
+						{ name: 'address',   label: 'Адрес',    width: 550, editable: true },
+						{ name: 'telephone', label: 'Телефон',  width: 250, editable: true },
+						{ name: 'principal', label: 'Директор', width: 300, editable: true }
+					],
+					grouping: true,
+					caption : "Домове"
+				})
+				.navGrid('#pager',
+					{ /* parameters */
+						edit: true,
+						add : true,
+						del : true
+					},
+
+					{ /* Edit   parameters */ },
+					{ /* Add    parameters */ },
+					{ /* Delete parameters */ },
+
+					{ /* Search parameters */
+						multipleSearch: true,
+						multipleGroup : false
+					},
+
+					{ /* View   parameters */ }
+				);
 		})
 	</script>
 

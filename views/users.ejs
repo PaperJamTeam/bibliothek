@@ -1,24 +1,24 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/free-jqgrid/css/ui.jqgrid.min.css">
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/jquery-ui/themes/base/jquery-ui.min.css">
-	<link rel="stylesheet" href="/../css/style.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/components/free-jqgrid/css/ui.jqgrid.min.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/components/jquery-ui/themes/base/jquery-ui.min.css">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
 	<table id="users_table"></table>
 	<div id="pager"></div>
 
-	<script type="text/javascript" src="/../components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="/../components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
-	<script type="text/javascript" src="/../components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
+	<script type="text/javascript" src="/components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="/components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
+	<script type="text/javascript" src="/components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
 
 	<script type="text/javascript">
 
 		$.extend($.jgrid.defaults, {
-			datatype: 'json',
-			jsonReader : {
-				repeatitems:false,
+			datatype  : 'json',
+			jsonReader: {
+				repeatitems: false,
 				total: function(result) {
 					//Total number of pages
 					return Math.ceil(result.total / result.max);
@@ -28,12 +28,15 @@
 					return result.total;
 				}
 			},
-			prmNames: {rows: 'max', search: null},
-			height: 'auto',
-			width: '800',
+			prmNames: {
+				rows  : 'max',
+				search: null
+			},
+			height     : 'auto',
+			width      : '800',
 			viewrecords: true,
-			rowList: [10, 20, 50, 100],
-			altRows: true,
+			rowList    : [10, 20, 50, 100],
+			altRows    : true,
 			loadError: function(xhr, status, error) {
 				alert(error);
 			}

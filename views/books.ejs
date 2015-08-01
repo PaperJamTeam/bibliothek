@@ -1,9 +1,9 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/free-jqgrid/css/ui.jqgrid.min.css">
-	<!--<link rel="stylesheet" type="text/css" media="screen" href="/../components/jqueryui/jquery-ui.min.css">-->
-	<link rel="stylesheet" type="text/css" media="screen" href="/../components/jquery-ui/themes/base/jquery-ui.min.css">
-	<link rel="stylesheet" href="/../css/style.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="/components/free-jqgrid/css/ui.jqgrid.min.css">
+	<!--<link rel="stylesheet" type="text/css" media="screen" href="/components/jqueryui/jquery-ui.min.css">-->
+	<link rel="stylesheet" type="text/css" media="screen" href="/components/jquery-ui/themes/base/jquery-ui.min.css">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
@@ -13,34 +13,48 @@
 
 	<div id="pager"></div>
 
-	<script type="text/javascript" src="/../components/jquery/dist/jquery.min.js"></script>
-	<!--<script type="text/javascript" src="/../components/jquery-ui/jquery-ui.min.js"></script>-->
-	<script type="text/javascript" src="/../components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
-	<script type="text/javascript" src="/../components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
-	<script type="text/javascript" src="/../js/jqGrid_defaults.js"></script>
+	<script type="text/javascript" src="/components/jquery/dist/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="/components/jquery-ui/jquery-ui.min.js"></script>-->
+	<script type="text/javascript" src="/components/free-jqgrid/js/jquery.jqgrid.min.js"></script>
+	<script type="text/javascript" src="/components/free-jqgrid/js/i18n/min/grid.locale-bg.js"></script>
+	<script type="text/javascript" src="/js/jqGrid_defaults.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#books_table")
-					.jqGrid({
-						url:'/books/data',
-						editurl:'/books/data',
-						colModel:[
-							{name:'ISBN', label: 'ISBN', width: 150, editable: true},
-							{name:'datePublished', label: 'Издадена', width: 100, editable: true},
-							{name:'EAN', label: 'EAN', width: 150, editable: true},
-							{name:'bookTitle', label: 'Заглавие', width: 500, editable: true},
-							{name:'pages', label: 'Страници', width: 100, editable: true}
-						],
-						caption: "Книги",
-						pager : '#pager',
-						height: 'auto'
-					}).navGrid('#pager', {edit:true,add:true,del:true},
-					{},
-					{},
-					{},
-					{multipleSearch:true, multipleGroup:false});
-		})
+				.jqGrid({
+					url     : '/books/data',
+					editurl : '/books/data',
+					colModel: [
+						{ name: 'ISBN',          label: 'ISBN',     width: 150, editable: true },
+						{ name: 'datePublished', label: 'Издадена', width: 100, editable: true },
+						{ name: 'EAN',           label: 'EAN',      width: 150, editable: true },
+						{ name: 'bookTitle',     label: 'Заглавие', width: 500, editable: true },
+						{ name: 'pages',         label: 'Страници', width: 100, editable: true }
+					],
+					caption : "Книги",
+					pager   : '#pager',
+					height  : 'auto'
+				})
+				.navGrid('#pager',
+					{
+						edit: true,
+						add : true,
+						del : true
+					},
+
+					{ /* Edit   parameters */ },
+					{ /* Add    parameters */ },
+					{ /* Delete parameters */ },
+
+					{ /* Search parameters */
+						multipleSearch: true,
+						multipleGroup : false
+					},
+
+					{ /* View   parameters */ }
+				)
+		});
 	</script>
 
 </body>
