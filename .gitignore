@@ -40,6 +40,12 @@ workspace.xml
 *.map
 !Gruntfile.js
 
+# Add back public stuff
+!/public/js/**/
+!/public/js/*.js
+!/public/img/
+!/public/css/
+
 # LESS generated CSS
 /public/css/style.css
 
