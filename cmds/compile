@@ -5,23 +5,10 @@ case `uname` in
     *CYGWIN*) basedir=`cygpath -w "$basedir"`;;
 esac
 
-if [ -x "tsc" ]; then
+if [ -x $(which tsc) ]; then
 	typescript="tsc"
-fi
-
-typescript="$basedir/node_modules/typescript/bin/tsc"
-
-params[0]="$typescript"
-params[1]="--sourcemap"
-params[2]="--module"
-params[3]="commonjs"
-params[4]="bin/www.ts"
-
-if [ -x "$basedir/node" ]; then
-  "$basedir/node" "${params[@]}"
-  ret=$?
 else
-  node "${params[@]}"
-  ret=$?
+	typescript="$basedir/../node_modules/typescript/bin/tsc"
 fi
-exit $ret
+
+exec $typescript "--sourcemap" "--module" "commonjs" "bin/www.ts"

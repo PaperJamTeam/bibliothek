@@ -1,6 +1,4 @@
 {
   "directory": "public/components",
-  "json": "bower.json",
-  "proxy": "http://10.0.0.1:1234",
-  "https-proxy": "http://10.0.0.1:1234"
+  "json": "bower.json"
 }
