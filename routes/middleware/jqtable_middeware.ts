@@ -133,7 +133,6 @@ export var generalDataSourceService = (Model: mongoose.Model<any>, lazy = true) 
 
 		if(lazy){
 			generateJqtableData(Model, new JqData(page, max, parsedJqReqData), (err, data) => {
-				console.log(data);
 				if(!err){
 					res.json(data);
 				} else {
@@ -157,7 +156,6 @@ export var generalDataSourceService = (Model: mongoose.Model<any>, lazy = true) 
 export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, cb: Function) : any => {
 	Model.count((err, total) => {
 		if (!err) {
-			console.log(reqData.query);
 			Model.aggregate(reqData.query).exec((err, data) => {
 				if (!err) {
 					cb(null, {
@@ -176,78 +174,47 @@ export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, c
 	});
 };
 
-var CRUD_handler = {
-
-	create: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
-		delete data['id'];
-		delete data['oper'];
-
-		return (new Model(data)).save(callback);
-	},
-
-	read: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
-		return Model.findOne(data, callback);
-	},
-
-	update: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
-		var criteria = { _id: data['id'] };
-		var options = { };
-
-		delete data['id'];
-		delete data['oper'];
-
-		return Model.update(data, criteria, options, callback);
-	},
-
-	delete: (Model: mongoose.Model<any>, data: Object, callback?: (err?: any, data?: any) => any): mongoose.Query<any>|void => {
-		return Model.remove({ _id: data['id'] }, callback);
-	}
-
-};
-// Add aliases
-CRUD_handler['add'] = CRUD_handler.create;
-CRUD_handler['del'] = CRUD_handler.delete;
-
-var CRUD_status = {
-	create: 201,
-	remove: 200,
-	update: 200,
-	delete: 200,
-	NOT_FOUND: 404,
-	FAIL: 500
-};
-
-CRUD_status['add'] = CRUD_status.create;
-CRUD_status['del'] = CRUD_status.delete;
+class Operation{
+	static CREATE = "add";
+	static UPDATE = "edit";
+	static DELETE = "del";
+}
 
 export var generalCrudService = (Model: mongoose.Model<any>) => {
-	return (req, res, next?) => {
+	return (req, res) => {
 
-		if(typeof next !== 'function') {
-			next = () => {};
-		}
 		var data = req.body;
-		var request_type = data['oper'];
+		var operation = data['oper'];
+		var id = data['id'];
 
-		var reseponseFunction = (err?: any, data?: any): void => {
-			if(err) {
-				logger.error(err);
-				res.status(CRUD_status['FAIL']).json({
-					message: 'Unable to fulfill request: ' + request_type.toUpperCase()
-				});
-			} else {
-				if(data) {
-					logger.info(request_type.toUpperCase(), 'successful.');
-					res.status(CRUD_status[request_type]).end();
-				} else {
-					logger.info(request_type.toUpperCase(), 'document not found.');
-					res.status(CRUD_status['NOT_FOUND']).end();
-				}
+		delete data['id'];
+		delete data['oper'];
 
+		switch(operation){
+			case Operation.CREATE: {
+				(new Model(data)).save(respondWith(res, 201, "Unable to create entry"));
+				break;
+			} case Operation.UPDATE: {
+				Model.update({_id: id}, data, {/* options */}, respondWith(res, 200, "Unable to update entry"));
+				break;
+			} case Operation.DELETE: {
+				Model.remove({_id:id}, respondWith(res, 200, "Unable to renove entry"));
+				break;
+			} default : {
+				res.status(400).send();
 			}
-			next(err);
-		};
-
-		CRUD_handler[request_type](Model, data, reseponseFunction);
-	}
+		}
+	};
 };
+
+var respondWith = (res, successStatus: number, errMessage: String) => {
+	console.log("test");
+	return (err: any, affectedRows?: number, raw?: any) => {
+		if(!err){
+			res.status(successStatus).send();
+		} else {
+			logger.error(err);
+			res.status(500).send(errMessage);
+		}
+	}
+}

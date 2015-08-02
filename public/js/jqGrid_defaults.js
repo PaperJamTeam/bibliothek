@@ -22,7 +22,6 @@ $.extend($.jgrid.defaults, {
 	altRows: true,
 	pager : '#pager',
 	autoencode: true,
-	autowidth: true,
 	shrinkToFit: false,
 	loadError: function(xhr, status, error) {
 		alert(error);
