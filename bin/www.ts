@@ -3,11 +3,22 @@
 import logger = require('../logger');
 import app = require('../app');
 
+import https = require('https');
+import fs = require('fs');
+
+var options = {
+	key: fs.readFileSync('./ssl/server.key'),
+	cert: fs.readFileSync('./ssl/server.crt'),
+	requestCert: false,
+	rejectUnauthorized: false
+};
+
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function() {
+var server = https.createServer(options, app).listen(app.get('port'), function () {
 	logger.debug('Server listening on port %d', server.address().port);
 });
+
 
 // Handle exits
 process.stdin.resume();	//so the program will not close instantly
