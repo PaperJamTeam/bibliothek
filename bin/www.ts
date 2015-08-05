@@ -35,6 +35,7 @@ function exitHandler(options, err) {
 		process.exit(-1);
 
 	logger.debug('Server is shutting down...');
+	require('mongoose').connection.close();
 }
 
 //do something when app is closing
