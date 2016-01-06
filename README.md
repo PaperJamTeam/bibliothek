@@ -1,6 +1,6 @@
 # Bibliothek
 
-![Deps](!https://david-dm.org/PaperJamTeam/bibliothek.svg)
+![Dependencies](https://david-dm.org/PaperJamTeam/bibliothek.svg)
 
 [Bibliothek](#) e сайт за даряване на книги на деца в неравностойно положение. CMS за налични книги по домове,  управление на трансфер на книги помежду им.
 
