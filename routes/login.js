@@ -1,13 +1,13 @@
-/// <reference path="../typings/tsd.d.ts" />
+'use strict';
 
-import express = require('express');
-import passport = require('passport');
+const express = require('express');
+const passport = require('passport');
 
-import User = require('../models/User');
+const User = require('../models/User');
 
-var router = express.Router();
+const router = express.Router();
 
-var LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},
 	(email, password, next) => {
@@ -41,4 +41,4 @@ router.post('/', passport.authenticate('local'), (req, res) => {
 	res.render('index', {title: 'SUCCESS!'});
 });
 
-export = router;
+module.exports = router;

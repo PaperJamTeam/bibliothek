@@ -1,10 +1,10 @@
-/// <reference path='../typings/tsd.d.ts' />
+'use strict';
 
-import logger = require('../logger');
-import app = require('../app');
+const logger = require('../logger');
+const app = require('../app');
 
-import https = require('https');
-import fs = require('fs');
+const https = require('https');
+const fs = require('fs');
 
 var options = {
 	key: fs.readFileSync('./ssl/server.key'),

@@ -1,11 +1,13 @@
 /**
  * Created by gharizanov on 28.7.2015 г..
  */
-import express = require('express');
-import Book = require('../models/Book');
-import jqtable = require('./middleware/jqtable_middeware');
+'use strict';
 
-var router = express.Router();
+const express = require('express');
+const Book = require('../models/Book');
+const jqtable = require('./middleware/jqtable_middeware');
+
+const router = express.Router();
 
 /* GET users listing. */
 router.get('/', (req, res) => {
@@ -18,4 +20,4 @@ router.get('/data', jqtable.generalDataSourceService(Book));
 
 router.post('/data', jqtable.generalCrudService(Book));
 
-export = router;
+module.exports = router;

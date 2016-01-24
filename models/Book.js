@@ -1,7 +1,8 @@
-/// <reference path="../typings/tsd.d.ts" />
-import mongoose = require('mongoose');
+'use strict';
 
-var BookSchema = new mongoose.Schema({
+const mongoose = require('mongoose');
+
+const BookSchema = new mongoose.Schema({
 	ISBN: String,
 	datePublished: String,
 	EAN: String,
@@ -13,5 +14,5 @@ var BookSchema = new mongoose.Schema({
 	authors: [{type: String, ref: 'Author'}]
 });
 
-var BookModel = mongoose.model('Book', BookSchema);
-export = BookModel;
+const BookModel = mongoose.model('Book', BookSchema);
+module.exports = BookModel;

@@ -1,7 +1,7 @@
-/// <reference path="../typings/tsd.d.ts" />
+'use strict';
 
-import express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 /* GET home page. */
 
@@ -13,4 +13,4 @@ router.get('/ajax/dashboard', (req, res) => {
 	res.render('ajax/dashboard');
 });
 
-export = router;
+module.exports = router;
