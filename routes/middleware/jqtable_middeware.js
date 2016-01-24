@@ -1,32 +1,21 @@
-/// <reference path="../../typings/tsd.d.ts" />
-import mongoose = require('mongoose');
-import logger = require('../../logger');
+'use strict';
 
-export class JqData {
-	page: number;
-	rows: number;
-	query: Object[];
+const mongoose = require('mongoose');
+const logger = require('../../logger');
 
-	constructor(page: number, rows: number, query: Object[]){
-		this.page = page;
-		this.rows = rows;
-		this.query = query;
-	}
-}
+const dataParser = (req, res, next) => {
+	const page = req.query['page'];
+	const max = req.query['max'];
+	const sidx = req.query['sidx'];
+	const order = req.query['sord'];
+	let filters = req.query['filters'];
 
-export var dataParser = (req, res, next) => {
-	var page = req.query['page'];
-	var max = req.query['max'];
-	var sidx = req.query['sidx'];
-	var order = req.query['sord'];
-	var filters = req.query['filters'];
-
-	var agg = [];
+	const agg = [];
 
 	agg.unshift({'$limit': Number(max)});
 	agg.unshift({'$skip': Number((page - 1) * max)});
 
-	var sort = {};
+	const sort = {};
 
 	if (sidx && sidx !== '' && order) {
 		if(order == 'asc'){
@@ -39,8 +28,8 @@ export var dataParser = (req, res, next) => {
 
 	req['jqtable_query'] = agg;
 
-	var grouped_filters = [];
-	var filter_data = {};
+	const grouped_filters = [];
+	let filter_data = {};
 	req['filter_data'] = filter_data;
 
 	if (!filters) {
@@ -56,7 +45,7 @@ export var dataParser = (req, res, next) => {
 	}
 
 	filters['rules'].forEach((filter) => {
-		var filter_entry = {};
+		const filter_entry = {};
 		switch (filter['op']) {
 			case "eq":
 			{ //equal
@@ -125,14 +114,17 @@ export var dataParser = (req, res, next) => {
 	next();
 };
 
-export var generalDataSourceService = (Model: mongoose.Model<any>, lazy = true) => {
+const generalDataSourceService = (Model, lazy) => {
+	if(typeof lazy === 'undefined') {
+		lazy = true;
+	}
 	return (req, res) => {
-		var page = req.query['page'];
-		var max = req.query['max'];
-		var parsedJqReqData = req['jqtable_query'];
+		const page = req.query['page'];
+		const max = req.query['max'];
+		const parsedJqReqData = req['jqtable_query'];
 
 		if(lazy){
-			generateJqtableData(Model, new JqData(page, max, parsedJqReqData), (err, data) => {
+			generateJqtableData(Model, {page: page, rows: max, query: parsedJqReqData}, (err, data) => {
 				if(!err){
 					res.json(data);
 				} else {
@@ -153,7 +145,7 @@ export var generalDataSourceService = (Model: mongoose.Model<any>, lazy = true) 
 	}
 };
 
-export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, cb: Function) : any => {
+const generateJqtableData = (Model, reqData, cb) => {
 	Model.count((err, total) => {
 		if (!err) {
 			Model.aggregate(reqData.query).exec((err, data) => {
@@ -174,30 +166,30 @@ export var generateJqtableData = (Model: mongoose.Model<any>, reqData: JqData, c
 	});
 };
 
-class Operation{
-	static CREATE = "add";
-	static UPDATE = "edit";
-	static DELETE = "del";
-}
+const operation = {
+	CREATE: "add",
+	UPDATE: "edit",
+	DELETE: "del",
+};
 
-export var generalCrudService = (Model: mongoose.Model<any>) => {
+const generalCrudService = (Model) => {
 	return (req, res) => {
 
-		var data = req.body;
-		var operation = data['oper'];
-		var id = data['id'];
+		const data = req.body;
+		const operation = data['oper'];
+		const id = data['id'];
 
 		delete data['id'];
 		delete data['oper'];
 
 		switch(operation){
-			case Operation.CREATE: {
+			case operation.CREATE: {
 				(new Model(data)).save(respondWith(res, 201, "Unable to create entry"));
 				break;
-			} case Operation.UPDATE: {
+			} case operation.UPDATE: {
 				Model.update({_id: id}, data, {/* options */}, respondWith(res, 200, "Unable to update entry"));
 				break;
-			} case Operation.DELETE: {
+			} case operation.DELETE: {
 				Model.remove({_id:id}, respondWith(res, 200, "Unable to renove entry"));
 				break;
 			} default : {
@@ -207,9 +199,8 @@ export var generalCrudService = (Model: mongoose.Model<any>) => {
 	};
 };
 
-var respondWith = (res, successStatus: number, errMessage: String) => {
-	console.log("test");
-	return (err: any, affectedRows?: number, raw?: any) => {
+const respondWith = (res, successStatus, errMessage) => {
+	return (err) => {
 		if(!err){
 			res.status(successStatus).send();
 		} else {
@@ -217,4 +208,12 @@ var respondWith = (res, successStatus: number, errMessage: String) => {
 			res.status(500).send(errMessage);
 		}
 	}
-}
+};
+
+module.exports = {
+	dataParser,
+	generalDataSourceService,
+	generateJqtableData,
+	generalCrudService,
+	respondWith
+};

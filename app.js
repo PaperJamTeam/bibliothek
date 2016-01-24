@@ -1,21 +1,21 @@
-/// <reference path='./typings/tsd.d.ts' />
+'use strict';
 
-import express = require('express');
-import path = require('path');
-import favicon = require('serve-favicon');
-import loggerMorgan = require('morgan');
-import cookieParser = require('cookie-parser');
-import bodyParser = require('body-parser');
-import passport = require('passport');
-import mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const loggerMorgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const mongoose = require('mongoose');
 
-import logger = require('./logger');
+const logger = require('./logger');
 
-import routes = require('./routes/index');
-import homes = require('./routes/homes');
-import books = require('./routes/books');
-import users = require('./routes/user');
-import login = require('./routes/login');
+const routes = require('./routes/index');
+const homes = require('./routes/homes');
+const books = require('./routes/books');
+const users = require('./routes/user');
+const login = require('./routes/login');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', (err) => {
 	if (err) {
@@ -26,14 +26,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', (err) => {
 	}
 });
 
-var app = express();
+const app = express();
 
 // view engine setup
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
@@ -57,7 +57,7 @@ app.use('/login', login);
 
 /// catch 404 and forward to error handler
 app.use((req, res, next) => {
-	var err = new Error('Not Found');
+	const err = new Error('Not Found');
 	err['status'] = 404;
 	next(err);
 });
@@ -68,7 +68,7 @@ app.use((req, res, next) => {
 // will print stacktrace
 
 if (app.get('env') === 'development') {
-	app.use((err: any, req, res, next) => {
+	app.use((err, req, res) => {
 		res.status(err.status || 500);
 		res.render('error', {
 			message: err.message,
@@ -80,7 +80,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use((err: any, req, res, next) => {
+app.use((err, req, res) => {
 	res.status(err.status || 500);
 	res.render('error', {
 		message: err.message,
@@ -90,4 +90,4 @@ app.use((err: any, req, res, next) => {
 });
 
 
-export = app;
+module.exports = app;
