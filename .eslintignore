@@ -1,0 +1,20 @@
+# Node modules
+node_modules/**
+
+# Additional commands
+cmds/**
+
+# Database
+db/**
+
+# Logs
+logs/**
+
+# Public
+public/components/**
+public/css
+public/img
+public/smartadmin
+
+# Views
+views/**

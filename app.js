@@ -2,7 +2,8 @@
 
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
+// Favicon
+require('serve-favicon');
 const loggerMorgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -17,9 +18,9 @@ const books = require('./routes/books');
 const users = require('./routes/user');
 const login = require('./routes/login');
 
-mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', (err) => {
+mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', err => {
 	if (err) {
-		logger.error("Could not connect to MongoDB (" + err.message + ")");
+		logger.error(`Could not connect to MongoDB (${err.message})`);
 		setTimeout(process.exit, 10, -1);
 	} else {
 		logger.info('Connected to MongoDB');
@@ -35,7 +36,7 @@ app.set('view engine', 'ejs');
 
 const env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
-app.locals.ENV_DEVELOPMENT = env == 'development';
+app.locals.ENV_DEVELOPMENT = (env === 'development');
 
 // app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(loggerMorgan('dev'));
@@ -58,7 +59,7 @@ app.use('/login', login);
 /// catch 404 and forward to error handler
 app.use((req, res, next) => {
 	const err = new Error('Not Found');
-	err['status'] = 404;
+	err.status = 404;
 	next(err);
 });
 
