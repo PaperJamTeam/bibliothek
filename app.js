@@ -18,7 +18,7 @@ const books = require('./routes/books');
 const users = require('./routes/user');
 const login = require('./routes/login');
 
-mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', err => {
+mongoose.connect('mongodb://127.0.0.1:27017/bibliothek', { useNewUrlParser: true }, err => {
 	if (err) {
 		logger.error(`Could not connect to MongoDB (${err.message})`);
 		setTimeout(process.exit, 10, -1);
